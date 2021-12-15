@@ -3,8 +3,8 @@ var Client;
 (function (Client) {
     console.log("Client läuft");
     const url = "http://127.0.0.1:3000/";
-    const path = "convertDate";
-    const myForm = document.getElementById("myForm");
+    const path = "/convertDate";
+    const myForm = document.getElementById("myform");
     const sendButton = document.getElementById("send-button");
     sendButton.addEventListener("click", function (evt) {
         evt.preventDefault();

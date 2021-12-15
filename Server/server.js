@@ -17,13 +17,16 @@ var Server;
                 response.write("Server erreichbar");
                 break;
             case "/convertDate":
-                let day = url.searchParams.get("day");
-                console.log(day);
-                let month = url.searchParams.get("month");
-                console.log(month);
-                let year = url.searchParams.get("year");
-                console.log(year);
-                response.write("Day: " + day + ", Month: " + month + "Year: " + year);
+                //let day: any = url.searchParams.get("day");
+                //console.log(day);
+                //let month: any = url.searchParams.get("month");
+                //console.log(month);
+                //let year: any = url.searchParams.get("year");
+                //console.log(year);
+                // response.write("Day: " + day + ", Month: " + month + "Year: " + year);
+                let date = url.searchParams.get("date");
+                console.log(date);
+                response.write("Day: " + date + ", Month: " + date + "Year: " + date);
                 break;
             default:
                 response.statusCode = 404;

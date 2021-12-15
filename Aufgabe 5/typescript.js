@@ -40,11 +40,11 @@ var interpret;
         // console.log("Save Button clicked");
         // inputInterpret.value; 
         // inputPrice.value; 
-        localStorage.setItem(inputInterpret.value, inputPrice.value);
+        localStorage.setItem("gis_praktikum_input" + inputInterpret.value, inputPrice.value);
     }
     function loadButtonHandler() {
         console.log("Load Button clicked");
-        let valueFromLocalStorage = localStorage.getItem(inputInterpret); //, inputPrice);
+        let valueFromLocalStorage = localStorage.getItem("gis_praktikum_input"); //(inputInterpret, inputPrice);
         console.log(valueFromLocalStorage);
         display2.textContent = valueFromLocalStorage;
     }

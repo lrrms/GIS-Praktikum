@@ -1,13 +1,14 @@
 
 namespace Client {
     console.log("Client läuft");
-    const url: string = "http://127.0.0.1:3000/";
-    const path: string = "convertDate";
 
-    const myForm: HTMLFormElement = <HTMLFormElement> document.getElementById("myForm");
-    const sendButton: HTMLButtonElement = <HTMLButtonElement> document.getElementById("send-button");
+    const url: string = "http://127.0.0.1:3000/"; 
+    const path: string = "/convertDate";
 
-    sendButton.addEventListener("click", function(evt: Event){
+    const myForm: HTMLFormElement = <HTMLFormElement>document.getElementById("myform");
+    const sendButton: HTMLButtonElement = <HTMLButtonElement>document.getElementById("send-button");
+
+    sendButton.addEventListener("click", function (evt: Event) {
         evt.preventDefault();
         sendForm();
     });

@@ -20,14 +20,19 @@ namespace Server {
                     response.write("Server erreichbar");
                     break;
                 case "/convertDate":
-                    let day: any = url.searchParams.get("day");
-                    console.log(day);
-                    let month: any = url.searchParams.get("month");
-                    console.log(month);
-                    let year: any = url.searchParams.get("year");
-                    console.log(year);
-                    response.write("Day: " + day + ", Month: " + month + "Year: " + year);
-                    break;
+                    //let day: any = url.searchParams.get("day");
+                    //console.log(day);
+                    //let month: any = url.searchParams.get("month");
+                    //console.log(month);
+                    //let year: any = url.searchParams.get("year");
+                    //console.log(year);
+                   // response.write("Day: " + day + ", Month: " + month + "Year: " + year);
+                    
+                   let date: any = url.searchParams.get("date");
+                   console.log(date);
+                   response.write("Day: " + date + ", Month: " + date + "Year: " + date);
+
+                   break;
 
                     default:
                         response.statusCode = 404;
