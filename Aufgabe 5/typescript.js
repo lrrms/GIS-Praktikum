@@ -7,19 +7,22 @@ var interpret;
     const button = document.querySelector("#macheEtwas");
     const deleteButton = document.querySelector("#löscheEtwas");
     //const inputFeld: HTMLInputElement = <HTMLInputElement>document.getElementById("input-element");
-    const saveButton = document.getElementById("save-button");
+    //const saveButton: HTMLButtonElement = <HTMLButtonElement>document.getElementById("save-button");
     const loadButton = document.getElementById("load-button");
     const display2 = document.getElementById("display");
-    button.addEventListener("click", ButtonHandler);
+    button.addEventListener("click", buttonHandler);
     console.log(inputInterpret);
     console.log(inputPrice);
-    function ButtonHandler() {
+    const array = [];
+    function buttonHandler() {
         let interpretValue = inputInterpret.value;
         let priceValue = Number(inputPrice.value);
         let newElement = document.createElement("div");
         let deleteButton = document.createElement("button");
         deleteButton.textContent = "Löschen";
         //text.Content ist das was man sieht 
+        array.push([interpretValue, priceValue]);
+        localStorage.setItem("gis_praktikum_input", JSON.stringify(array));
         newElement.textContent = interpretValue + "; " + priceValue;
         display2.appendChild(newElement);
         newElement.appendChild(deleteButton);
@@ -34,19 +37,13 @@ var interpret;
         console.log("deleteEvent wurde aufgerufen!");
         display2.removeChild(parentElement);
     }
-    saveButton.addEventListener("click", saveButtonHandler);
     loadButton.addEventListener("click", loadButtonHandler);
-    function saveButtonHandler() {
-        // console.log("Save Button clicked");
-        // inputInterpret.value; 
-        // inputPrice.value; 
-        localStorage.setItem("gis_praktikum_input" + inputInterpret.value, inputPrice.value);
-    }
     function loadButtonHandler() {
         console.log("Load Button clicked");
-        let valueFromLocalStorage = localStorage.getItem("gis_praktikum_input"); //(inputInterpret, inputPrice);
+        let valueFromLocalStorage = localStorage.getItem("gis_praktikum_input");
         console.log(valueFromLocalStorage);
         display2.textContent = valueFromLocalStorage;
     }
-})(interpret || (interpret = {}));
+    loadButtonHandler();
+})(interpret || (interpret = {})); // in tabelle und lösch button 
 //# sourceMappingURL=typescript.js.map

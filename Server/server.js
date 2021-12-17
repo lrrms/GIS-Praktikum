@@ -5,6 +5,8 @@ var Server;
 (function (Server) {
     const hostname = "127.0.0.1"; //localhost 
     const port = 3000; //Port
+    //const date1 = new Date(year, monthIndex [,day]);
+    const date = new Date();
     const server = http.createServer(//server wird definiert
     (request, response) => {
         response.statusCode = 200;
@@ -26,7 +28,8 @@ var Server;
                 // response.write("Day: " + day + ", Month: " + month + "Year: " + year);
                 let date = url.searchParams.get("date");
                 console.log(date);
-                response.write("Day: " + date + ", Month: " + date + "Year: " + date);
+                response.write(new Date(dateString));
+                //response.write("Day: " + date + ", Month: " + date + "Year: " + date);
                 break;
             default:
                 response.statusCode = 404;

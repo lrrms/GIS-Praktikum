@@ -5,10 +5,14 @@ namespace Server {
     const hostname: string = "127.0.0.1"; //localhost 
     const port: number = 3000; //Port
 
+    //const date1 = new Date(year, monthIndex [,day]);
+    const date = new Date(); 
+
     const server: http.Server = http.createServer( //server wird definiert
         (request: http.IncomingMessage, response: http.ServerResponse) => {
 
             response.statusCode = 200;
+
             response.setHeader("Content-Type", "text/plain"); //header welcher typ die response hat 
             response.setHeader("Access-Control-Allow-Origin", "*"); //von wo die response erreichbar ist 
 
@@ -28,9 +32,12 @@ namespace Server {
                     //console.log(year);
                    // response.write("Day: " + day + ", Month: " + month + "Year: " + year);
                     
-                   let date: any = url.searchParams.get("date");
+                   let date: Date = url.searchParams.get("date");
                    console.log(date);
-                   response.write("Day: " + date + ", Month: " + date + "Year: " + date);
+
+                   response.write(new Date(dateString));
+
+                   //response.write("Day: " + date + ", Month: " + date + "Year: " + date);
 
                    break;
 
