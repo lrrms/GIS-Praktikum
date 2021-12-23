@@ -4,7 +4,6 @@ import { listenerCount } from "process";
 namespace Server {
     const hostname: string = "127.0.0.1"; //localhost 
     const port: number = 3000; //Port auf dem der Server laufen soll 
-    //var d = Date();
 
     const server: http.Server = http.createServer( //server wird definiert
         (request: http.IncomingMessage, response: http.ServerResponse) => {
@@ -23,7 +22,9 @@ namespace Server {
                     break;
 
                 case "/convertDate":
-                    let date: Date = new Date (JSON.parse(url.searchParams.get("b")));
+                    let date: any = url.searchParams.get("date");
+                    console.log(date);
+
                     response.write("Day: " + date.getDay() + "; Month: " + date.getMonth() + " ; Year" + date.getFullYear());
                     
                     break;
@@ -34,7 +35,6 @@ namespace Server {
             response.end();
         }
     );
-
     server.listen(port, hostname, () => { //definiert wo und auf welchen host er lauschen soll
         //console.log('Server running at http://127.0.0.1:3000');
         console.groupCollapsed(`Server running at http://${hostname}:${port}`);

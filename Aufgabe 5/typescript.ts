@@ -1,11 +1,9 @@
 namespace interpret {
     const inputInterpret: HTMLInputElement = <HTMLInputElement> document.getElementById("input-interpret");
     const inputPrice: HTMLInputElement = <HTMLInputElement> document.getElementById("input-price");
-    //const display: HTMLElement = <HTMLElement> document.querySelector("#display");
     const button: HTMLButtonElement = <HTMLButtonElement> document.querySelector("#macheEtwas");
     const deleteButton: HTMLButtonElement = <HTMLButtonElement> document.querySelector("#löscheEtwas");
    //const inputFeld: HTMLInputElement = <HTMLInputElement>document.getElementById("input-element");
-    //const saveButton: HTMLButtonElement = <HTMLButtonElement>document.getElementById("save-button");
     const loadButton: HTMLButtonElement = <HTMLButtonElement>document.getElementById("load-button");
     const display2: HTMLDivElement = <HTMLDivElement>document.getElementById("display");
 

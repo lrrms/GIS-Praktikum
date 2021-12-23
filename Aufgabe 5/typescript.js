@@ -3,11 +3,9 @@ var interpret;
 (function (interpret) {
     const inputInterpret = document.getElementById("input-interpret");
     const inputPrice = document.getElementById("input-price");
-    //const display: HTMLElement = <HTMLElement> document.querySelector("#display");
     const button = document.querySelector("#macheEtwas");
     const deleteButton = document.querySelector("#löscheEtwas");
     //const inputFeld: HTMLInputElement = <HTMLInputElement>document.getElementById("input-element");
-    //const saveButton: HTMLButtonElement = <HTMLButtonElement>document.getElementById("save-button");
     const loadButton = document.getElementById("load-button");
     const display2 = document.getElementById("display");
     button.addEventListener("click", buttonHandler);

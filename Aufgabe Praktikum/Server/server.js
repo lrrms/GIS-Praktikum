@@ -5,7 +5,6 @@ var Server;
 (function (Server) {
     const hostname = "127.0.0.1"; //localhost 
     const port = 3000; //Port auf dem der Server laufen soll 
-    //var d = Date();
     const server = http.createServer(//server wird definiert
     (request, response) => {
         response.statusCode = 200; //status wird definiert 
@@ -18,7 +17,8 @@ var Server;
                 response.write("Server erreichbar");
                 break;
             case "/convertDate":
-                let date = new Date(JSON.parse(url.searchParams.get("b")));
+                let date = url.searchParams.get("date");
+                console.log(date);
                 response.write("Day: " + date.getDay() + "; Month: " + date.getMonth() + " ; Year" + date.getFullYear());
                 break;
             default:
