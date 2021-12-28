@@ -18,13 +18,13 @@ var Server;
                 break;
             case "/convertDate":
                 let date = url.searchParams.get("date");
-                console.log(date);
+                response.end(date);
                 response.write("Day: " + date.getDay() + "; Month: " + date.getMonth() + " ; Year" + date.getFullYear());
                 break;
             default:
                 response.statusCode = 404;
         }
-        response.end();
+        response.end(Date);
     });
     server.listen(port, hostname, () => {
         //console.log('Server running at http://127.0.0.1:3000');

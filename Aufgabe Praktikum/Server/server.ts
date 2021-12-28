@@ -22,8 +22,8 @@ namespace Server {
                     break;
 
                 case "/convertDate":
-                    let date: any = url.searchParams.get("date");
-                    console.log(date);
+                    let date: string = url.searchParams.get("date");
+                    response.end(date);
 
                     response.write("Day: " + date.getDay() + "; Month: " + date.getMonth() + " ; Year" + date.getFullYear());
                     
@@ -32,7 +32,7 @@ namespace Server {
                     default:
                         response.statusCode = 404;
             }
-            response.end();
+            response.end(Date);
         }
     );
     server.listen(port, hostname, () => { //definiert wo und auf welchen host er lauschen soll

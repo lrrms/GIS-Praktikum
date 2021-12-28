@@ -3,7 +3,7 @@ namespace interpret {
     const inputPrice: HTMLInputElement = <HTMLInputElement> document.getElementById("input-price");
     const display: HTMLElement = <HTMLElement> document.querySelector("#display");
     const button: HTMLButtonElement = <HTMLButtonElement> document.querySelector("#macheEtwas");
-    const deleteButton: HTMLButtonElement = <HTMLButtonElement> document.querySelector("#löscheEtwas");
+   //const deleteButton: HTMLButtonElement = <HTMLButtonElement> document.querySelector("#löscheEtwas");
 
     button.addEventListener("click", ButtonHandler);
     

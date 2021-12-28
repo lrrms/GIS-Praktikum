@@ -21,6 +21,12 @@ namespace Client {
        let query: URLSearchParams = new URLSearchParams(<any>formData);
        let urlWithQuery: string = url + path + "?" + query.toString();
 
+       let dateElement: HTMLElement = document.createElement("p");
+       dateElement.className = "response";
+       dateElement.textContent = responseText;
+       myForm.append(newDate);
+       
+
        let response: Response = await fetch(urlWithQuery);
        let responseText: string = await response.text();
        console.log(responseText);
