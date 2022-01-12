@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const http = require("http"); //Http modul inportieren 
+const http = require("http"); //Http modul importieren 
 //import { listenerCount } from "process";
 const mongo = require("mongodb");
 var Server;
@@ -9,6 +9,7 @@ var Server;
     const port = 3000; //Port auf dem der Server laufen soll 
     const mongoUrl = "mongodb://localhost:27017"; //für lokale Mongodb
     let mongoClient = new mongo.MongoClient(mongoUrl);
+    //mongoClient open und close 
     async function dbFind(db, collection, requestObject, response) {
         let result = await mongoClient
             .db(db)
@@ -20,7 +21,7 @@ var Server;
     }
     const server = http.createServer(//server wird definiert
     async (request, response) => {
-        response.statusCode = 200; //status wird definiert 
+        response.statusCode = 200; //status wird definiert wenn feheler auftritt 
         response.setHeader("Content-Type", "text/plain"); //Rückgabetyp wird definiert 
         response.setHeader("Access-Control-Allow-Origin", "*"); //von wo der Rückgabetyp erreichbar ist 
         //Routing der verschiedenen Pfade
@@ -29,46 +30,36 @@ var Server;
             case "/":
                 response.write("Server erreichbar");
                 break;
-            case "/concertEvents": //concertEvent?
+            case "/concertEvents": //Pfad 
                 await mongoClient.connect();
                 switch (request.method) {
                     case "GET":
-                        await dbFind("konzerteSammlung", "konzert", {
-                            konzertNr: Number(url.searchParams.get("konzertNr")),
+                        await dbFind(//sucht in der Datenbank nach 
+                        "künstler", "preis", {
+                        //konzertNr: Number(url.searchParams.get("konzertNr")) 
                         }, response);
-                        break;
-                    case "POST":
-                        let jsonString = "";
-                        request.on("data", data => {
-                            jsonString += data;
-                        });
-                        request.on("end", async () => {
-                            mongoClient
-                                .db("konzerteSammlung")
-                                .collection("konzert")
-                                .insertOne(JSON.parse(jsonString));
-                        });
                         break;
                 }
                 break;
-        }
-        break;
-    });
-    "/concertEvents";
-    {
-        await mongoClient.connect();
-        switch (http.request.method) {
-            case "GET":
-                await dbFind("konzerteSammlung", "konzert", {}, response);
+            case "POST":
+                let jsonString = "";
+                request.on("data", data => {
+                    jsonString += data;
+                });
+                request.on("end", async () => {
+                    mongoClient
+                        .db("konzerte")
+                        .collection("künstler")
+                        .insertOne(JSON.parse(jsonString));
+                });
                 break;
+            default:
+                response.statusCode = 404;
         }
-        break;
-    }
-    response.statusCode = 404;
+        response.end();
+    });
+    server.listen(port, hostname, () => {
+        console.log(`Server running at http://${hostname}:${port}`);
+    });
 })(Server || (Server = {}));
-Response.end();
-;
-server.listen(port, hostname, () => {
-    console.log(`Server running at http://${hostname}:${port}`);
-});
 //# sourceMappingURL=server.js.map

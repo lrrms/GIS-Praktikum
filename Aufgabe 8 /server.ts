@@ -1,4 +1,4 @@
-import * as http from "http"; //Http modul inportieren 
+import * as http from "http"; //Http modul importieren 
 //import { listenerCount } from "process";
 
 import * as mongo from "mongodb"; 
@@ -17,7 +17,7 @@ namespace Server { //namespace müssen gleich sein
         collection: string, 
         requestObject: any,
         response: http.ServerResponse
-    ){
+    ) {
         let result = await mongoClient
         .db(db)
         .collection(collection)
@@ -44,47 +44,38 @@ namespace Server { //namespace müssen gleich sein
                     response.write("Server erreichbar");
                     break;
 
-                case "/concertEvent": //Pfad 
+                case "/concertEvents": //Pfad 
                     await mongoClient.connect();
                     switch (request.method) {
                         case "GET": 
                         await dbFind( //sucht in der Datenbank nach 
-                            "konzertDatenbank",
-                            "konzert",
+                            "künstler",
+                            "preis",
                             {
-                                konzertNr: Number(url.searchParams.get("konzertNr"))                  
+                                //konzertNr: Number(url.searchParams.get("konzertNr")) 
                             },
-                            response 
-                            
+                            response        
                         ); 
                         break;
-
-                        case "POST":
-                            let jsonString = "";
-                            request.on("data", data => {
-                                jsonString += data;
-
-                            });
-                            request.on("end", async () => { //Pfeil deklariert die Funktion 
-                                mongoClient
-                                .db("konzertDatenbank")
-                                .collection("konzert") 
-                                .insertOne(JSON.parse(jsonString));
-                            });
-                        break;
-                            
                     }
-
-                case "/concertEvents":
-                    await mongoClient.connect();
-                    switch (http.request.method) {
-                        case "GET":
-                            await dbFind("konzerteSammlung", "konzert", {}, response);
-                            break;
-                    }
+                    break;
+                
+                case "POST":
+                    let jsonString = "";
+                    request.on("data", data => {
+                        jsonString += data;
+                    });
+                    request.on("end", async () => { //Pfeil deklariert die Funktion 
+                        mongoClient
+                        .db("konzerte")
+                        .collection("künstler") 
+                        .insertOne(JSON.parse(jsonString));
+                    });
+                    break;
+                
                 default:
                     response.statusCode = 404;
-            }
+                }
             response.end();
         }
     );
