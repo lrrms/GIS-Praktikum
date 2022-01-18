@@ -18,10 +18,10 @@ namespace Client {
 
    // }
     
-    function readFormData(){
+    function readFormData() {
         var formData: any = {};
-        formData["künstler"] = document.getElementById("künstler").innerHTML;
-        formData["preis"] = document.getElementById("preis").innerHTML;
+        formData["interpret"] = document.getElementById("interpret").innerHTML;
+        formData["price"] = document.getElementById("price").innerHTML;
         return readFormData;
     }
 
@@ -31,10 +31,10 @@ namespace Client {
     ): Promise<void> {
         let response: Response = await fetch (url, {
             method: "post",
-            body: jsonString, 
+            body: jsonString 
         });
     }
-    async function requestKünstler(): Promise<void> {
+    async function requestInterpret(): Promise<void> {
         let response: Response = await fetch(
             `http://localhost:3000/concertEvents`
         );
@@ -46,13 +46,12 @@ namespace Client {
         await sendJSONStringWithPOST(
             "http://localhost:3000/concertEvents", 
             JSON.stringify({
-                künstler: "Sam Smith",
-                price: 40,
+                interpret: "Sam Smith",
+                price: 40
                 
             })
         );
-        await requestKünstler();
+        await requestInterpret();
     }
-
     test();
 }

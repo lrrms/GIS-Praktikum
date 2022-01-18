@@ -24,7 +24,7 @@ namespace Server { //namespace müssen gleich sein
         .find(requestObject)
         .toArray();
         
-        response.setHeader("Content-Type", "application/json");
+        response.setHeader("Content-Type", "application/json"); //json format wird zurückgesendet 
         response.write(JSON.stringify(result));
     
     }
@@ -33,7 +33,7 @@ namespace Server { //namespace müssen gleich sein
         async (request: http.IncomingMessage, response: http.ServerResponse) => {
 
             response.statusCode = 200; //status wird definiert wenn feheler auftritt 
-            response.setHeader("Content-Type", "text/plain"); //Rückgabetyp wird definiert 
+           // response.setHeader("Content-Type", "text/plain"); //Rückgabetyp wird definiert 
             response.setHeader("Access-Control-Allow-Origin", "*"); //von wo der Rückgabetyp erreichbar ist 
 
             //Routing der verschiedenen Pfade
@@ -48,18 +48,24 @@ namespace Server { //namespace müssen gleich sein
                     await mongoClient.connect();
                     switch (request.method) {
                         case "GET": 
-                        await dbFind( //sucht in der Datenbank nach 
-                            "künstler",
-                            "preis",
-                            {
-                                //konzertNr: Number(url.searchParams.get("konzertNr")) 
-                            },
-                            response        
-                        ); 
+                        mongoClient.db("events").collection("interpret").insertOne({
+                            "interpret": "Sam Smith",
+                            "price": 40
+                        });
+                    
                         break;
                     }
                     break;
-                
+                case "/auslesen": //Pfad 
+                    await mongoClient.connect();
+                    switch (request.method) {
+                        case "GET": 
+                        await dbFind("events", "interpret", {}, response);
+
+                        break;
+                    }
+                    break;
+
                 case "POST":
                     let jsonString = "";
                     request.on("data", data => {
@@ -67,8 +73,8 @@ namespace Server { //namespace müssen gleich sein
                     });
                     request.on("end", async () => { //Pfeil deklariert die Funktion 
                         mongoClient
-                        .db("konzerte")
-                        .collection("künstler") 
+                        .db("events")
+                        .collection("interpret") 
                         .insertOne(JSON.parse(jsonString));
                     });
                     break;
