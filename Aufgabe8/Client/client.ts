@@ -1,14 +1,18 @@
 
 namespace Client {
     console.log("Client läuft"); //Testausgabe
-    const url: string = "http://localhost:3001"; 
+    const url: string = "http://127.0.0.1:3001"; 
     const path: string = "/concertEvents";
 
-   const interpret: HTMLInputElement = <HTMLInputElement> document.getElementById("interpret");
-   const price: HTMLInputElement = <HTMLInputElement> document.getElementById("price");
+   const interpretInput: HTMLInputElement = <HTMLInputElement> document.getElementById("interpret");
+   const priceInput: HTMLInputElement = <HTMLInputElement> document.getElementById("price");
    const myButton: HTMLButtonElement = <HTMLButtonElement> document.querySelector("#macheEtwas");
 
-    myButton.addEventListener("click", myButtonHandler);
+    myButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        myButtonHandler(event);
+
+    });
 
     interface ConcertEvent {
         interpret: string; 
@@ -20,18 +24,19 @@ namespace Client {
     // Funktion schreiben, mit der man die Daten beim Laden der Seite abrufen und anzeigen kann 
 
     async function myButtonHandler(event: Event): Promise <void> {
-        let interpret: string = "Sam Smith"; //Interpret vom Input
-        let price: string  = "40"; //Preis vom Input 
+        let interpret: string = interpretInput.value; //Interpret vom Input
+        let price: string  = priceInput.value; //Preis vom Input 
         let concertEvent: ConcertEvent = {
             interpret: interpret, 
             price: price
         };
+        console.log(concertEvent);
         await send(concertEvent);
     }
 
     async function send(event: ConcertEvent): Promise <void> {
         await fetch(url + path, {
-            method: "post",
+            method: "POST",
             body: JSON.stringify(event)
         });
 

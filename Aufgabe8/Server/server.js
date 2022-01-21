@@ -44,11 +44,13 @@ var Server;
                     jsonString += data;
                 });
                 request.on("end", async () => {
-                    mongoClient
-                        .db("events")
-                        .collection("interpret")
-                        .insertOne(JSON.parse(jsonString));
+                    console.log(jsonString);
+                    /*  mongoClient
+                      .db("events")
+                      .collection("interpret")
+                      .insertOne(JSON.parse(jsonString));*/
                 });
+                response.write("rückgabe");
                 break;
             default:
                 response.statusCode = 404;

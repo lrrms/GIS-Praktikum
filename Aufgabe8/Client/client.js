@@ -2,26 +2,30 @@
 var Client;
 (function (Client) {
     console.log("Client läuft"); //Testausgabe
-    const url = "http://localhost:3001";
+    const url = "http://127.0.0.1:3001";
     const path = "/concertEvents";
-    const interpret = document.getElementById("interpret");
-    const price = document.getElementById("price");
+    const interpretInput = document.getElementById("interpret");
+    const priceInput = document.getElementById("price");
     const myButton = document.querySelector("#macheEtwas");
-    myButton.addEventListener("click", myButtonHandler);
+    myButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        myButtonHandler(event);
+    });
     //array fehlt um via GET alle Datensätze zu bekommen 
     // Funktion schreiben, mit der man die Daten beim Laden der Seite abrufen und anzeigen kann 
     async function myButtonHandler(event) {
-        let interpret = "Sam Smith"; //Interpret vom Input
-        let price = "40"; //Preis vom Input 
+        let interpret = interpretInput.value; //Interpret vom Input
+        let price = priceInput.value; //Preis vom Input 
         let concertEvent = {
             interpret: interpret,
             price: price
         };
+        console.log(concertEvent);
         await send(concertEvent);
     }
     async function send(event) {
         await fetch(url + path, {
-            method: "post",
+            method: "POST",
             body: JSON.stringify(event)
         });
     }

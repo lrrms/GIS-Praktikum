@@ -60,11 +60,14 @@ namespace Server { //namespace müssen gleich sein
                         jsonString += data;
                     });
                     request.on("end", async () => { //Pfeil deklariert die Funktion 
-                        mongoClient
+                        console.log(jsonString);
+                      /*  mongoClient
                         .db("events")
                         .collection("interpret") 
-                        .insertOne(JSON.parse(jsonString));
+                        .insertOne(JSON.parse(jsonString));*/
                     });
+                    response.write("rückgabe");
+
                     break;
                 
                 default:
