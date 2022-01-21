@@ -1,43 +1,54 @@
 "use strict";
-//import { request } from "http";
-//import * as mongo from "mongodb";
 var Client;
 (function (Client) {
     console.log("Client läuft"); //Testausgabe
-    const url = "http://127.0.0.1:3000";
+    const url = "http://localhost:3001";
     const path = "/concertEvents";
-    //const inputInterpret: HTMLInputElement = <HTMLInputElement> document.getElementById("input-interpret");
-    // const inputPrice: HTMLInputElement = <HTMLInputElement> document.getElementById("input-price");
-    // const myButton: HTMLButtonElement = <HTMLButtonElement> document.querySelector("#macheEtwas");
-    //myButton.addEventListener("click, MyButtonHandler");
-    // function myButtonHandler(): void { 
-    //    let interpretValue: string = inputInterpret.value;
-    //   let priceValue: number = Number(inputPrice.value);
-    // }
+    const interpret = document.getElementById("interpret");
+    const price = document.getElementById("price");
+    const myButton = document.querySelector("#macheEtwas");
+    myButton.addEventListener("click", myButtonHandler);
+    //array fehlt um via GET alle Datensätze zu bekommen 
+    // Funktion schreiben, mit der man die Daten beim Laden der Seite abrufen und anzeigen kann 
+    async function myButtonHandler(event) {
+        let interpret = "Sam Smith"; //Interpret vom Input
+        let price = "40"; //Preis vom Input 
+        let concertEvent = {
+            interpret: interpret,
+            price: price
+        };
+        await send(concertEvent);
+    }
+    async function send(event) {
+        await fetch(url + path, {
+            method: "post",
+            body: JSON.stringify(event)
+        });
+    }
     function readFormData() {
         var formData = {};
-        formData["künstler"] = document.getElementById("künstler").innerHTML;
-        formData["preis"] = document.getElementById("preis").innerHTML;
+        formData["interpret"] = document.getElementById("interpret").innerHTML;
+        formData["price"] = document.getElementById("price").innerHTML;
         return readFormData;
     }
     async function sendJSONStringWithPOST(url, jsonString) {
         let response = await fetch(url, {
             method: "post",
-            body: jsonString,
+            body: jsonString
         });
     }
-    async function requestKünstler() {
-        let response = await fetch(`http://localhost:3000/concertEvents`);
+    async function requestInterpret() {
+        let response = await fetch(`http://localhost:3001/concertEvents`);
         let text = await response.text();
         console.log(JSON.parse(text));
     }
     async function test() {
-        await sendJSONStringWithPOST("http://localhost:3000/concertEvents", JSON.stringify({
-            künstler: "Sam Smith",
-            price: 40,
+        await sendJSONStringWithPOST("http://localhost:3001/concertEvents", JSON.stringify({
+            interpret: "Sam Smith",
+            price: 40
         }));
-        await requestKünstler();
+        await requestInterpret();
     }
-    test();
+    //test();
 })(Client || (Client = {}));
 //# sourceMappingURL=client.js.map

@@ -5,7 +5,7 @@ import * as mongo from "mongodb";
 
 namespace Server { //namespace müssen gleich sein
     const hostname: string = "127.0.0.1"; //localhost 
-    const port: number = 3000; //Port auf dem der Server laufen soll 
+    const port: number = 3001; //Port auf dem der Server laufen soll 
     const mongoUrl: string = "mongodb://localhost:27017"; //für lokale Mongodb
 
     let mongoClient: mongo.MongoClient = new mongo.MongoClient(mongoUrl);
@@ -36,6 +36,8 @@ namespace Server { //namespace müssen gleich sein
            // response.setHeader("Content-Type", "text/plain"); //Rückgabetyp wird definiert 
             response.setHeader("Access-Control-Allow-Origin", "*"); //von wo der Rückgabetyp erreichbar ist 
 
+            response.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE");
+
             //Routing der verschiedenen Pfade
             let url: URL = new URL(request.url || "", `http://${request.headers.host}` );
 
@@ -47,25 +49,11 @@ namespace Server { //namespace müssen gleich sein
                 case "/concertEvents": //Pfad 
                     await mongoClient.connect();
                     switch (request.method) {
-                        case "GET": 
-                        mongoClient.db("events").collection("interpret").insertOne({
-                            "interpret": "Sam Smith",
-                            "price": 40
-                        });
-                    
+                        case "GET":
+                            await dbFind("events", "interpret", {}, response);
                         break;
                     }
-                    break;
-                case "/auslesen": //Pfad 
-                    await mongoClient.connect();
-                    switch (request.method) {
-                        case "GET": 
-                        await dbFind("events", "interpret", {}, response);
-
-                        break;
-                    }
-                    break;
-
+        
                 case "POST":
                     let jsonString = "";
                     request.on("data", data => {
