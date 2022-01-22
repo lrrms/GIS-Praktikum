@@ -37,21 +37,21 @@ var Server;
                     case "GET":
                         await dbFind("events", "interpret", {}, response);
                         break;
+                    case "POST":
+                        let jsonString = "";
+                        request.on("data", data => {
+                            jsonString += data;
+                        });
+                        request.on("end", async () => {
+                            console.log(jsonString);
+                            mongoClient
+                                .db("events")
+                                .collection("interpret")
+                                .insertOne(JSON.parse(jsonString));
+                        });
+                        response.write("rückgabe");
+                        break;
                 }
-            case "POST":
-                let jsonString = "";
-                request.on("data", data => {
-                    jsonString += data;
-                });
-                request.on("end", async () => {
-                    console.log(jsonString);
-                    /*  mongoClient
-                      .db("events")
-                      .collection("interpret")
-                      .insertOne(JSON.parse(jsonString));*/
-                });
-                response.write("rückgabe");
-                break;
             default:
                 response.statusCode = 404;
         }
