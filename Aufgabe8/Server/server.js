@@ -1,15 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const http = require("http"); //Http modul importieren 
-//import { listenerCount } from "process";
 const mongo = require("mongodb");
 var Server;
 (function (Server) {
     const hostname = "127.0.0.1"; //localhost 
     const port = 3001; //Port auf dem der Server laufen soll 
-    const mongoUrl = "mongodb://localhost:27017"; //für lokale Mongodb
-    let mongoClient = new mongo.MongoClient(mongoUrl);
-    //mongoClient open und close 
+    const mongoUrl = "mongodb://127.0.0.1:27017"; //für lokale Mongodb
+    //let mongoClient: mongo.MongoClient = new mongo.MongoClient(mongoUrl);
+    const mongoClient = new mongo.MongoClient(mongoUrl, {
+        connectTimeoutMS: 0,
+        serverSelectionTimeoutMS: 0
+    }); //Funktion vom Praktikum (Philip) -> hat sonst nicht funktioniert 
     async function dbFind(db, collection, requestObject, response) {
         let result = await mongoClient
             .db(db)
@@ -22,7 +24,6 @@ var Server;
     const server = http.createServer(//server wird definiert
     async (request, response) => {
         response.statusCode = 200; //status wird definiert wenn feheler auftritt 
-        // response.setHeader("Content-Type", "text/plain"); //Rückgabetyp wird definiert 
         response.setHeader("Access-Control-Allow-Origin", "*"); //von wo der Rückgabetyp erreichbar ist 
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE");
         //Routing der verschiedenen Pfade
@@ -35,7 +36,7 @@ var Server;
                 await mongoClient.connect();
                 switch (request.method) {
                     case "GET":
-                        await dbFind("events", "interpret", {}, response);
+                        await dbFind("konzert", "konzert-Events", {}, response);
                         break;
                     case "POST":
                         let jsonString = "";
@@ -43,13 +44,12 @@ var Server;
                             jsonString += data;
                         });
                         request.on("end", async () => {
-                            console.log(jsonString);
+                            //console.log(jsonString);
                             mongoClient
-                                .db("events")
-                                .collection("interpret")
+                                .db("konzert")
+                                .collection("konzert-Events")
                                 .insertOne(JSON.parse(jsonString));
                         });
-                        response.write("rückgabe");
                         break;
                 }
             default:

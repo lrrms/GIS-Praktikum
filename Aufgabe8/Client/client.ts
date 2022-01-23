@@ -1,81 +1,90 @@
 
 namespace Client {
-    console.log("Client läuft"); //Testausgabe
+    const myButton: HTMLButtonElement = <HTMLButtonElement>document.getElementById("myButton");
+    const interpretInput: HTMLInputElement = <HTMLInputElement>document.getElementById("interpret");
+    const priceInput: HTMLInputElement = <HTMLInputElement>document.getElementById("price");
+    const tabelle: HTMLElement = <HTMLElement>document.getElementById("tabelle");   
+
     const url: string = "http://127.0.0.1:3001"; 
     const path: string = "/concertEvents";
+    
+    console.log(myButton);
 
-   const interpretInput: HTMLInputElement = <HTMLInputElement> document.getElementById("interpret");
-   const priceInput: HTMLInputElement = <HTMLInputElement> document.getElementById("price");
-   const myButton: HTMLButtonElement = <HTMLButtonElement> document.querySelector("#macheEtwas");
-
-    myButton.addEventListener("click", (event) => {
-        event.preventDefault();
-        myButtonHandler(event);
-
-    });
-
-    interface ConcertEvent {
+    interface Reihe {
         interpret: string; 
         price: string; 
-
     }
+    
+    let eventFromServer: Reihe[] = [];
 
-    //array fehlt um via GET alle Datensätze zu bekommen 
-    // Funktion schreiben, mit der man die Daten beim Laden der Seite abrufen und anzeigen kann 
+    window.addEventListener("load", () => {
+        getData();
+    });
+
+    myButton.addEventListener("click", myButtonHandler);
+
+
+    async function getData(): Promise<void> {
+        let response: Response = await fetch(url + path);
+        let responseText: string = await response.text();
+        console.log(responseText);
+        eventFromServer = JSON.parse(responseText);
+        console.log(eventFromServer);
+
+        for ( let i: number = 0; i < eventFromServer.length; i++) {
+            createTabelle(eventFromServer[i].interpret, eventFromServer[i].price);
+        }
+    }
 
     async function myButtonHandler(event: Event): Promise <void> {
-        let interpret: string = interpretInput.value; //Interpret vom Input
-        let price: string  = priceInput.value; //Preis vom Input 
-        let concertEvent: ConcertEvent = {
-            interpret: interpret, 
-            price: price
+        
+        event.preventDefault();
+
+        let konzert: Reihe = {
+            interpret: interpretInput.value,
+            price: priceInput.value
         };
-        console.log(concertEvent);
-        await send(concertEvent);
-    }
 
-    async function send(event: ConcertEvent): Promise <void> {
-        await fetch(url + path, {
-            method: "POST",
-            body: JSON.stringify(event)
-        });
+        console.log(konzert);
+        createTabelle(konzert.interpret, konzert.price);
+        sendJSONStringWithPOST(url + path, JSON.stringify(konzert));
 
-    }
-
-    function readFormData() {
-        var formData: any = {};
-        formData["interpret"] = document.getElementById("interpret").innerHTML;
-        formData["price"] = document.getElementById("price").innerHTML;
-        return readFormData;
+    
     }
 
     async function sendJSONStringWithPOST(
-        url: RequestInfo, 
-        jsonString: string 
-    ): Promise<void> {
+        url: RequestInfo,
+        jsonString: string
+        ): Promise <void> {
         let response: Response = await fetch (url, {
-            method: "post",
-            body: jsonString 
+            method: "POST",
+            body: jsonString
         });
     }
+   /* 
     async function requestInterpret(): Promise<void> {
-        let response: Response = await fetch(
+        let response: Response = await fetch (
             `http://localhost:3001/concertEvents`
         );
         let text: string = await response.text();
         console.log(JSON.parse(text));
-    }
+        }
 
-    async function test() {
-        await sendJSONStringWithPOST(
-            "http://localhost:3001/concertEvents", 
-            JSON.stringify({
-                interpret: "Sam Smith",
-                price: 40
-                
-            })
-        );
-        await requestInterpret();
+    }*/
+    function createTabelle(interpretWert: string, priceWert: string): void {
+        
+        let tr: HTMLElement = document.createElement("tr");
+        let interpret: HTMLElement = document.createElement("td");
+        let price: HTMLElement = document.createElement("td");
+       
+
+        interpret.textContent = interpretWert;
+        price.textContent = priceWert;
+
+        tabelle.appendChild(tr);
+        tr.setAttribute("id", "row-");
+        tr.appendChild(interpret);
+        tr.appendChild(price);
+
     }
-    //test();
 }

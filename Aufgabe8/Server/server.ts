@@ -1,16 +1,16 @@
 import * as http from "http"; //Http modul importieren 
-//import { listenerCount } from "process";
-
 import * as mongo from "mongodb";
 
-namespace Server { //namespace müssen gleich sein
+namespace Server { 
     const hostname: string = "127.0.0.1"; //localhost 
     const port: number = 3001; //Port auf dem der Server laufen soll 
-    const mongoUrl: string = "mongodb://localhost:27017"; //für lokale Mongodb
+    const mongoUrl: string = "mongodb://127.0.0.1:27017"; //für lokale Mongodb
 
-    let mongoClient: mongo.MongoClient = new mongo.MongoClient(mongoUrl);
-
-    //mongoClient open und close 
+    //let mongoClient: mongo.MongoClient = new mongo.MongoClient(mongoUrl);
+    const mongoClient = new mongo.MongoClient(mongoUrl, {
+        connectTimeoutMS: 0,
+        serverSelectionTimeoutMS: 0
+        }); //Funktion vom Praktikum (Philip) -> hat sonst nicht funktioniert 
 
     async function dbFind(
         db: string,
@@ -18,7 +18,7 @@ namespace Server { //namespace müssen gleich sein
         requestObject: any,
         response: http.ServerResponse
     ) {
-        let result = await mongoClient
+        let result: any = await mongoClient
             .db(db)
             .collection(collection)
             .find(requestObject)
@@ -33,9 +33,7 @@ namespace Server { //namespace müssen gleich sein
         async (request: http.IncomingMessage, response: http.ServerResponse) => {
 
             response.statusCode = 200; //status wird definiert wenn feheler auftritt 
-            // response.setHeader("Content-Type", "text/plain"); //Rückgabetyp wird definiert 
             response.setHeader("Access-Control-Allow-Origin", "*"); //von wo der Rückgabetyp erreichbar ist 
-
             response.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE");
 
             //Routing der verschiedenen Pfade
@@ -50,29 +48,33 @@ namespace Server { //namespace müssen gleich sein
                     await mongoClient.connect();
                     switch (request.method) {
                         case "GET":
-                            await dbFind("events", "interpret", {}, response);
+                            await dbFind(
+                                "konzert",
+                                "konzert-Events",
+                                {
+                                },
+                                response
+                            );
                             break;
 
                         case "POST":
-                            let jsonString = "";
+                            let jsonString: string = "";
                             request.on("data", data => {
                                 jsonString += data;
                             });
                             request.on("end", async () => { //Pfeil deklariert die Funktion 
-                                console.log(jsonString);
+                                //console.log(jsonString);
                                 mongoClient
-                                    .db("events")
-                                    .collection("interpret")
+                                    .db("konzert")
+                                    .collection("konzert-Events")
                                     .insertOne(JSON.parse(jsonString));
-                            });
-                            response.write("rückgabe");
-
+                                });
                             break;
                         }
-
-                default:
-                    response.statusCode = 404;
-            }
+                    
+                    default:
+                        response.statusCode = 404;
+                }
             response.end();
         }
     );

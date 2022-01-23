@@ -1,26 +1,33 @@
 <!DOCTYPE html> 
-<html>
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta>
-        <meta name="author" content="Laura Ramos"/><meta>
-        <meta name="viewport" content="width"/><meta>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta>
-        <script src="client.js" defer></script>
-        <title> Titel der Seite </title>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="author" content="Laura Ramos">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="client.js" defer></script>
+    <title> Titel der Seite </title>
        
-    </head>
+</head>
     <body> 
-        <form>
+        <form id="sendForm">
 
-        <input id="interpret" type ="text" name="interpret" placeholder="interpret" /> 
-        <input id="price" type ="number" name="price" placeholder="price" />
+        <input id="interpret" type ="text" name="interpret" placeholder="Interpret" /> 
+        <input id="price" type ="number" name="price" placeholder="Price" />
                
-        <button id="macheEtwas"> Interpret Eintragen </button>
+        <button id="sendButton">Interpret Eintragen</button>
 
     </form>
-
-
+    <main>
+        <div>
+            <table id="tabelle">
+                <tr>
+                    <th>Interpret</th>
+                    <th>Price</th>
+                </tr>
+            </table>    
+        </div>
+    </main>
     
     </body>
 </html>

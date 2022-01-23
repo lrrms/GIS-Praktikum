@@ -1,58 +1,63 @@
 "use strict";
 var Client;
 (function (Client) {
-    console.log("Client läuft"); //Testausgabe
-    const url = "http://127.0.0.1:3001";
-    const path = "/concertEvents";
+    const myButton = document.getElementById("myButton");
     const interpretInput = document.getElementById("interpret");
     const priceInput = document.getElementById("price");
-    const myButton = document.querySelector("#macheEtwas");
-    myButton.addEventListener("click", (event) => {
-        event.preventDefault();
-        myButtonHandler(event);
+    const tabelle = document.getElementById("tabelle");
+    const url = "http://127.0.0.1:3001";
+    const path = "/concertEvents";
+    console.log(myButton);
+    let eventFromServer = [];
+    window.addEventListener("load", () => {
+        getData();
     });
-    //array fehlt um via GET alle Datensätze zu bekommen 
-    // Funktion schreiben, mit der man die Daten beim Laden der Seite abrufen und anzeigen kann 
+    async function getData() {
+        let response = await fetch(url + path);
+        let responseText = await response.text();
+        console.log(responseText);
+        eventFromServer = JSON.parse(responseText);
+        console.log(eventFromServer);
+        for (let i = 0; i < eventFromServer.length; i++) {
+            createTabelle(eventFromServer[i].interpret, eventFromServer[i].price);
+        }
+    }
     async function myButtonHandler(event) {
-        let interpret = interpretInput.value; //Interpret vom Input
-        let price = priceInput.value; //Preis vom Input 
-        let concertEvent = {
-            interpret: interpret,
-            price: price
+        event.preventDefault();
+        let konzert = {
+            interpret: interpretInput.value,
+            price: priceInput.value
         };
-        console.log(concertEvent);
-        await send(concertEvent);
-    }
-    async function send(event) {
-        await fetch(url + path, {
-            method: "POST",
-            body: JSON.stringify(event)
-        });
-    }
-    function readFormData() {
-        var formData = {};
-        formData["interpret"] = document.getElementById("interpret").innerHTML;
-        formData["price"] = document.getElementById("price").innerHTML;
-        return readFormData;
+        console.log(konzert);
+        createTabelle(konzert.interpret, konzert.price);
+        sendJSONStringWithPOST(url + path, JSON.stringify(konzert));
     }
     async function sendJSONStringWithPOST(url, jsonString) {
         let response = await fetch(url, {
-            method: "post",
+            method: "POST",
             body: jsonString
         });
     }
-    async function requestInterpret() {
-        let response = await fetch(`http://localhost:3001/concertEvents`);
-        let text = await response.text();
-        console.log(JSON.parse(text));
+    /*
+     async function requestInterpret(): Promise<void> {
+         let response: Response = await fetch (
+             `http://localhost:3001/concertEvents`
+         );
+         let text: string = await response.text();
+         console.log(JSON.parse(text));
+         }
+ 
+     }*/
+    function createTabelle(interpretWert, priceWert) {
+        let tr = document.createElement("tr");
+        let interpret = document.createElement("td");
+        let price = document.createElement("td");
+        interpret.textContent = interpretWert;
+        price.textContent = priceWert;
+        tabelle.appendChild(tr);
+        tr.setAttribute("id", "row-");
+        tr.appendChild(interpret);
+        tr.appendChild(price);
     }
-    async function test() {
-        await sendJSONStringWithPOST("http://localhost:3001/concertEvents", JSON.stringify({
-            interpret: "Sam Smith",
-            price: 40
-        }));
-        await requestInterpret();
-    }
-    //test();
 })(Client || (Client = {}));
 //# sourceMappingURL=client.js.map
